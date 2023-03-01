@@ -1,64 +1,74 @@
 public class MovieManager {
-    private String[] movieDatabase = new String[0];
-    private int resultLength = 10;
-    private String[] resultDatabase = new String[resultLength];
+    private MovieRepository movieRepo;
 
-    public MovieManager() {
+    public MovieManager(MovieRepository movieRepo) {
+        this.movieRepo = movieRepo;
+    }
+    // private MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
+
+    public MovieEntry[] findAllMoviesAdded() {
+        MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
+        return movieDatabase;
     }
 
-    public MovieManager(int resultLength) {
-        this.resultLength = resultLength;
-    }
-
-    public String[] addMovieToDB(String newMovieEntry) {
-        String[] bufferDatabase = new String[movieDatabase.length + 1];
-        for (int pos = 0; pos < movieDatabase.length; pos++) {
+    public MovieEntry[] saveMovieInDatabase(MovieEntry newEntry) {
+        MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
+        MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length + 1];
+        for ( int pos = 0; pos < movieDatabase.length; pos++ ) {
             bufferDatabase[pos] = movieDatabase[pos];
         }
-        bufferDatabase[bufferDatabase.length - 1] = newMovieEntry;
+        bufferDatabase[bufferDatabase.length - 1] = newEntry;
         movieDatabase = bufferDatabase;
         return movieDatabase;
     }
 
-    public String[] getMovieDatabase() {
-        return movieDatabase;
-    }
-
-    public String[] findAllMoviesAdded(String newMovieEntry) {
-        /** Ну кагбэ логика, реализованная в первом пункте задания, и без того
-         * возвращает все фильмы, добавленные в базу данных, в порядке добавления.
-         * Зачем под это нужен ещё один метод, неясно. Сделать ссылку внутри метода
-         * на другой метод, принимающий непонятно что из отдельного класса MovieEntry
-         * (если делать всё ИМЕННО так, как показано в видео, по аналогии с Purchase Item[])
-         * в качестве параметра, я не могу. Или не сообразил как. Возможно, задача была бы проще,
-         * если бы нам объяснили, например, что такое интерфейсы. Однако этого не произошло.
-         * Нам на лекции в принципе не объяснили, как это можно так ловко добавить ссылку на
-         * класс в параметр и какое для этого требуется оформление, а также какие у этого
-         * издержки. \_(^~^)_/
-         * */
-
-        movieDatabase = addMovieToDB(newMovieEntry);
-        return movieDatabase;
-    }
-
-    public String[] findLastNmoviesAddedInReverse(int resultLength) {
-        String[] resultDatabase = new String[resultLength];
-        /** следует учитывать, что
-         а) позиции массива нумеруютсяс нуля,
-         б) число результатов может быть равно одному */
-
-        int posResult = 0;
-        /** итеративная переменная для выбора позиции в новом массиве (с результатами) перед записью из основного*/
-
-                    for (int pos = movieDatabase.length - 1; pos > (movieDatabase.length - resultLength - 1); pos--) {
-
-                resultDatabase[posResult] = movieDatabase[pos];
-                posResult = posResult + 1;
+    public MovieEntry[] findInDatabaseById(int targetId) {
+        MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
+        MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length];
+        int pos = 0;
+        int matchCount = 0;
+        for ( MovieEntry newEntry : movieDatabase ) {
+            if ( newEntry.getMovieId() == targetId ) {
+                bufferDatabase[pos] = newEntry;
+                pos++;
+                matchCount++;
+            } else {
+                pos++;
             }
-        return resultDatabase;
+        }
+        MovieEntry[] dynamicDatabase = new MovieEntry[matchCount];
+        int posDynamic = 0;
+
+        for ( pos = 0; pos < bufferDatabase.length; pos++) {
+            if ( bufferDatabase[pos] != null) {
+                dynamicDatabase[posDynamic] = bufferDatabase[pos];
+                pos++;
+                posDynamic++;
+            } else {
+                pos++;
+            }
+        }
+        return dynamicDatabase;
     }
 
-    public String[] getResultDatabase() {
-        return resultDatabase;
+    public MovieEntry[] removeFromDatabaseById(int removeId) {
+        MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
+        MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length - 1];
+        int pos = 0;
+        for ( MovieEntry newEntry : movieDatabase ) {
+            if ( newEntry.getMovieId() != removeId ) {
+                bufferDatabase[pos] = newEntry;
+                pos++;
+            }
+        }
+        movieDatabase = bufferDatabase;
+        return movieDatabase;
+    }
+
+    public MovieEntry[] removeAllMoviesFromDB() {
+        MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
+        MovieEntry[] clearedDatabase = new MovieEntry[0];
+        movieDatabase = clearedDatabase;
+        return movieDatabase;
     }
 }

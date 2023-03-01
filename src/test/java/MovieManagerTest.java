@@ -1,158 +1,104 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 public class MovieManagerTest {
 
-//    MovieManager movie1 = new MovieManager("Прибытие поезда");
-//    MovieManager movie2 = new MovieManager("Путешествие на Луну (1902)");
-//    MovieManager movie3 = new MovieManager("Генерал (1926)");
-//    MovieManager movie4 = new MovieManager("Метрополис");
-//    MovieManager movie5 = new MovieManager("Тайны одной души");
-//    MovieManager movie6 = new MovieManager("Унесённые ветром (1939)");
-//    MovieManager movie7 = new MovieManager("Александр Невский (1938)");
-//    MovieManager movie8 = new MovieManager("Гражданин Кейн");
-//    MovieManager movie9 = new MovieManager("Окно во двор");
-//    MovieManager movie10 = new MovieManager("2001: Космическая одиссея");
-//    MovieManager movie11 = new MovieManager("Чужой");
-//    MovieManager movie12 = new MovieManager("Бегущий по лезвию (1982)");
-//    MovieManager movie13 = new MovieManager("Матрица (1999)");
+    MovieRepository movieRepo = Mockito.mock(MovieRepository.class);
+    MovieManager movieMngr = new MovieManager(movieRepo);
+
+    MovieEntry movie1 = new MovieEntry("Прибытие поезда", 1703);
+    MovieEntry movie2 = new MovieEntry("Путешествие на Луну (1902)", 1337);
+    MovieEntry movie3 = new MovieEntry("Генерал (1926)", 1453);
+    MovieEntry movie4 = new MovieEntry("Метрополис", 1666);
+    MovieEntry movie5 = new MovieEntry("Тайны одной души", 1138);
+    MovieEntry movie6 = new MovieEntry("Унесённые ветром (1939)", 1984);
+    MovieEntry movie7 = new MovieEntry("Александр Невский (1938)", 2011);
+    MovieEntry movie8 = new MovieEntry("Гражданин Кейн", 2112);
+    MovieEntry movie9 = new MovieEntry("Окно во двор", 2049);
+    MovieEntry movie10 = new MovieEntry("2001: Космическая одиссея", 2077);
+    MovieEntry movie11 = new MovieEntry("Чужой", 1612);
+    MovieEntry movie12 = new MovieEntry("Бегущий по лезвию (1982)", 1917);
+    MovieEntry movie13 = new MovieEntry("Матрица (1999)", 1138);
+    MovieEntry movie14 = new MovieEntry("Властелин колец", 1789);
+    MovieEntry movie15 = new MovieEntry("Интерстеллар", 1492);
 
     @Test
-    public void shdAddToMDB() {
-        MovieManager wutToWatch = new MovieManager();
-        wutToWatch.addMovieToDB("Матрица (1999)");
-        wutToWatch.addMovieToDB("Чужой");
-        wutToWatch.addMovieToDB("Александр Невский (1938)");
-        wutToWatch.addMovieToDB("Метрополис");
-        wutToWatch.addMovieToDB("Тайны одной души");
+    public void shdSaveMovieInDB() {
+        MovieEntry[] movieDatabase = {};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {"Матрица (1999)", "Чужой", "Александр Невский (1938)", "Метрополис", "Тайны одной души"};
-        String[] actual = wutToWatch.getMovieDatabase();
+        MovieEntry[] expected = {movie15};
+        MovieEntry[] actual = movieMngr.saveMovieInDatabase(movie15);
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shdAddToMDBifZero() {
-        MovieManager wutToWatch = new MovieManager();
+    public void shdFindAllMoviesInDB() {
+        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {};
-        String[] actual = wutToWatch.getMovieDatabase();
-
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shdAddToMDBifSingle() {
-        MovieManager wutToWatch = new MovieManager();
-        wutToWatch.addMovieToDB("Чужой");
-
-        String[] expected = {"Чужой"};
-        String[] actual = wutToWatch.getMovieDatabase();
+        MovieEntry[] expected = {movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] actual = movieMngr.findAllMoviesAdded();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shdReturnAllMoviesInDB() {
-        MovieManager wutToWatch = new MovieManager();
-        wutToWatch.findAllMoviesAdded("Матрица (1999)");
-        wutToWatch.findAllMoviesAdded("Чужой");
-        wutToWatch.findAllMoviesAdded("Александр Невский (1938)");
-        wutToWatch.findAllMoviesAdded("Метрополис");
-        wutToWatch.findAllMoviesAdded("Тайны одной души");
+    public void shdFindMovieById() {
+        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {"Матрица (1999)", "Чужой", "Александр Невский (1938)", "Метрополис", "Тайны одной души"};
-        String[] actual = wutToWatch.getMovieDatabase();
+
+        MovieEntry[] expected = {movie1};
+        MovieEntry[] actual = movieMngr.findInDatabaseById(1703);
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shdReturnLastNmoviesDefault() {
-        MovieManager wutToWatch = new MovieManager();
-        wutToWatch.addMovieToDB("Матрица (1999)");
-        wutToWatch.addMovieToDB("Чужой");
-        wutToWatch.addMovieToDB("Александр Невский (1938)");
-        wutToWatch.addMovieToDB("Метрополис");
-        wutToWatch.addMovieToDB("Тайны одной души");
-        wutToWatch.addMovieToDB("Окно во двор");
-        wutToWatch.addMovieToDB("Генерал");
-        wutToWatch.addMovieToDB("1984");
-        wutToWatch.addMovieToDB("Клеопатра");
-        wutToWatch.addMovieToDB("Большие гонки");
-        wutToWatch.addMovieToDB("Война и мир");
-        wutToWatch.addMovieToDB("Солярис");
+    public void shdFindMovieByIdIfNonexistent() {
+        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {"Солярис", "Война и мир", "Большие гонки", "Клеопатра", "1984", "Генерал", "Окно во двор",
-                "Тайны одной души", "Метрополис", "Александр Невский (1938)"};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(10);
+        MovieEntry[] expected = {}; /** насколько я понял, ожидаемый массив в принципе нельзя прописать как null;
+         можно ли считать пустой массив сооответствующим заданию? */
+        MovieEntry[] actual = movieMngr.findInDatabaseById(5928);
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shdReturnLastNmoviesCustomMulti() {
-        MovieManager wutToWatch = new MovieManager(5);
-        wutToWatch.addMovieToDB("Матрица (1999)");
-        wutToWatch.addMovieToDB("Чужой");
-        wutToWatch.addMovieToDB("Александр Невский (1938)");
-        wutToWatch.addMovieToDB("Метрополис");
-        wutToWatch.addMovieToDB("Тайны одной души");
-        wutToWatch.addMovieToDB("Окно во двор");
-        wutToWatch.addMovieToDB("Генерал");
-        wutToWatch.addMovieToDB("1984");
-        wutToWatch.addMovieToDB("Клеопатра");
-        wutToWatch.addMovieToDB("Большие гонки");
-        wutToWatch.addMovieToDB("Война и мир");
-        wutToWatch.addMovieToDB("Солярис");
+    public void shdFindMovieByIdIfDuplicate() {
+        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {"Солярис", "Война и мир", "Большие гонки", "Клеопатра", "1984"};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(5);
+        MovieEntry[] expected = {movie5, movie13};
+        MovieEntry[] actual = movieMngr.findInDatabaseById(1138);
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shdReturnLastNmoviesCustomZero() {
-        MovieManager wutToWatch = new MovieManager(0);
-        wutToWatch.addMovieToDB("Матрица (1999)");
-        wutToWatch.addMovieToDB("Чужой");
-        wutToWatch.addMovieToDB("Александр Невский (1938)");
-        wutToWatch.addMovieToDB("Метрополис");
-        wutToWatch.addMovieToDB("Тайны одной души");
-        wutToWatch.addMovieToDB("Окно во двор");
-        wutToWatch.addMovieToDB("Генерал");
-        wutToWatch.addMovieToDB("1984");
-        wutToWatch.addMovieToDB("Клеопатра");
-        wutToWatch.addMovieToDB("Большие гонки");
-        wutToWatch.addMovieToDB("Война и мир");
-        wutToWatch.addMovieToDB("Солярис");
+    public void shdRemoveFromDatabaseById() {
+        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(0);
+        MovieEntry[] expected = {movie1, movie3, movie5, movie13};
+        MovieEntry[] actual = movieMngr.removeFromDatabaseById(2112);
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shdReturnLastNmoviesCustomSingle() {
-        MovieManager wutToWatch = new MovieManager(1);
-        wutToWatch.addMovieToDB("Матрица (1999)");
-        wutToWatch.addMovieToDB("Чужой");
-        wutToWatch.addMovieToDB("Александр Невский (1938)");
-        wutToWatch.addMovieToDB("Метрополис");
-        wutToWatch.addMovieToDB("Тайны одной души");
-        wutToWatch.addMovieToDB("Окно во двор");
-        wutToWatch.addMovieToDB("Генерал");
-        wutToWatch.addMovieToDB("1984");
-        wutToWatch.addMovieToDB("Клеопатра");
-        wutToWatch.addMovieToDB("Большие гонки");
-        wutToWatch.addMovieToDB("Война и мир");
-        wutToWatch.addMovieToDB("Солярис");
+    public void shdRemoveAllMovies() {
+        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        String[] expected = {"Солярис"};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(1);
+        MovieEntry[] expected = {};
+        MovieEntry[] actual = movieMngr.removeAllMoviesFromDB();
 
         Assertions.assertArrayEquals(expected, actual);
     }
