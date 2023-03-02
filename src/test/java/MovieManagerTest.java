@@ -56,11 +56,11 @@ public class MovieManagerTest {
     @Test
     public void shdReturnAllMoviesInDB() {
         MovieManager wutToWatch = new MovieManager();
-        wutToWatch.findAllMoviesAdded("Матрица (1999)");
-        wutToWatch.findAllMoviesAdded("Чужой");
-        wutToWatch.findAllMoviesAdded("Александр Невский (1938)");
-        wutToWatch.findAllMoviesAdded("Метрополис");
-        wutToWatch.findAllMoviesAdded("Тайны одной души");
+        wutToWatch.addMovieToDB("Матрица (1999)");
+        wutToWatch.addMovieToDB("Чужой");
+        wutToWatch.addMovieToDB("Александр Невский (1938)");
+        wutToWatch.addMovieToDB("Метрополис");
+        wutToWatch.addMovieToDB("Тайны одной души");
 
         String[] expected = {"Матрица (1999)", "Чужой", "Александр Невский (1938)", "Метрополис", "Тайны одной души"};
         String[] actual = wutToWatch.getMovieDatabase();
@@ -86,7 +86,7 @@ public class MovieManagerTest {
 
         String[] expected = {"Солярис", "Война и мир", "Большие гонки", "Клеопатра", "1984", "Генерал", "Окно во двор",
                 "Тайны одной души", "Метрополис", "Александр Невский (1938)"};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(10);
+        String[] actual = wutToWatch.findLastNmoviesAddedInReverse();
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -108,7 +108,7 @@ public class MovieManagerTest {
         wutToWatch.addMovieToDB("Солярис");
 
         String[] expected = {"Солярис", "Война и мир", "Большие гонки", "Клеопатра", "1984"};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(5);
+        String[] actual = wutToWatch.findLastNmoviesAddedInReverse();
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -130,7 +130,7 @@ public class MovieManagerTest {
         wutToWatch.addMovieToDB("Солярис");
 
         String[] expected = {};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(0);
+        String[] actual = wutToWatch.findLastNmoviesAddedInReverse();
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -152,7 +152,7 @@ public class MovieManagerTest {
         wutToWatch.addMovieToDB("Солярис");
 
         String[] expected = {"Солярис"};
-        String[] actual = wutToWatch.findLastNmoviesAddedInReverse(1);
+        String[] actual = wutToWatch.findLastNmoviesAddedInReverse();
 
         Assertions.assertArrayEquals(expected, actual);
     }
