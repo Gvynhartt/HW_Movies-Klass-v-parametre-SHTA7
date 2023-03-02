@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import static org.mockito.Mockito.*;
 
 public class MovieManagerTest {
@@ -37,7 +38,7 @@ public class MovieManagerTest {
 
     @Test
     public void shdFindAllMoviesInDB() {
-        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
         MovieEntry[] expected = {movie1, movie3, movie5, movie8, movie13};
@@ -48,7 +49,7 @@ public class MovieManagerTest {
 
     @Test
     public void shdFindMovieById() {
-        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
 
@@ -60,7 +61,7 @@ public class MovieManagerTest {
 
     @Test
     public void shdFindMovieByIdIfNonexistent() {
-        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
         MovieEntry[] expected = {}; /** насколько я понял, ожидаемый массив в принципе нельзя прописать как null;
@@ -72,7 +73,7 @@ public class MovieManagerTest {
 
     @Test
     public void shdFindMovieByIdIfDuplicate() {
-        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
         MovieEntry[] expected = {movie5, movie13};
@@ -83,7 +84,7 @@ public class MovieManagerTest {
 
     @Test
     public void shdRemoveFromDatabaseById() {
-        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
         MovieEntry[] expected = {movie1, movie3, movie5, movie13};
@@ -94,7 +95,7 @@ public class MovieManagerTest {
 
     @Test
     public void shdRemoveAllMovies() {
-        MovieEntry[] movieDatabase = { movie1, movie3, movie5, movie8, movie13};
+        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
         MovieEntry[] expected = {};

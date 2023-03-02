@@ -4,7 +4,6 @@ public class MovieManager {
     public MovieManager(MovieRepository movieRepo) {
         this.movieRepo = movieRepo;
     }
-    // private MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
 
     public MovieEntry[] findAllMoviesAdded() {
         MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
@@ -14,7 +13,7 @@ public class MovieManager {
     public MovieEntry[] saveMovieInDatabase(MovieEntry newEntry) {
         MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
         MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length + 1];
-        for ( int pos = 0; pos < movieDatabase.length; pos++ ) {
+        for (int pos = 0; pos < movieDatabase.length; pos++) {
             bufferDatabase[pos] = movieDatabase[pos];
         }
         bufferDatabase[bufferDatabase.length - 1] = newEntry;
@@ -27,8 +26,8 @@ public class MovieManager {
         MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length];
         int pos = 0;
         int matchCount = 0;
-        for ( MovieEntry newEntry : movieDatabase ) {
-            if ( newEntry.getMovieId() == targetId ) {
+        for (MovieEntry newEntry : movieDatabase) {
+            if (newEntry.getMovieId() == targetId) {
                 bufferDatabase[pos] = newEntry;
                 pos++;
                 matchCount++;
@@ -39,8 +38,8 @@ public class MovieManager {
         MovieEntry[] dynamicDatabase = new MovieEntry[matchCount];
         int posDynamic = 0;
 
-        for ( pos = 0; pos < bufferDatabase.length; pos++) {
-            if ( bufferDatabase[pos] != null) {
+        for (pos = 0; pos < bufferDatabase.length; pos++) {
+            if (bufferDatabase[pos] != null) {
                 dynamicDatabase[posDynamic] = bufferDatabase[pos];
                 pos++;
                 posDynamic++;
@@ -55,8 +54,8 @@ public class MovieManager {
         MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
         MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length - 1];
         int pos = 0;
-        for ( MovieEntry newEntry : movieDatabase ) {
-            if ( newEntry.getMovieId() != removeId ) {
+        for (MovieEntry newEntry : movieDatabase) {
+            if (newEntry.getMovieId() != removeId) {
                 bufferDatabase[pos] = newEntry;
                 pos++;
             }
