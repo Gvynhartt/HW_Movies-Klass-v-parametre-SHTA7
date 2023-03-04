@@ -23,11 +23,11 @@ public class MovieManager {
         return movieDatabase;
     }
 
-    public String[] findAllMoviesAdded() {
+    public String[] findAll() { /** выводит все фильмы в порядке добавления*/
         return movieDatabase;
     }
 
-    public String[] findLastNmoviesAddedInReverse() {
+    public String[] findLast() { /** Выводит максимальный лимит последних добавленных фильмов в обратном порядке*/
         String[] resultDatabase = new String[resultLength];
         /** следует учитывать, что
          а) позиции массива нумеруются с нуля,
