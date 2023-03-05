@@ -9,6 +9,8 @@ public class MovieManager {
         this.resultLength = resultLength;
     }
 
+    public String[] resultDatabase = new String[0];
+
     public String[] addMovieToDB(String newMovieEntry) {
         String[] bufferDatabase = new String[movieDatabase.length + 1];
         for (int pos = 0; pos < movieDatabase.length; pos++) {
@@ -28,19 +30,17 @@ public class MovieManager {
     }
 
     public String[] findLast() { /** Выводит максимальный лимит последних добавленных фильмов в обратном порядке*/
-        String[] resultDatabase = new String[resultLength];
-        /** следует учитывать, что
-         а) позиции массива нумеруются с нуля,
-         б) число результатов может быть равно одному */
-
-        int posResult = 0;
-        /** итеративная переменная для выбора позиции в новом массиве (с результатами) перед записью из основного*/
-
-        for (int pos = movieDatabase.length - 1; pos > (movieDatabase.length - resultLength - 1); pos--) {
-
-            resultDatabase[posResult] = movieDatabase[pos];
-            posResult = posResult + 1;
+        if (resultLength > movieDatabase.length) {/** проверяет, не превышвет ли число результатов длину массива фильмов */
+            resultLength = movieDatabase.length;
         }
+        String[] bufferDatabase = new String[resultLength];
+        int posResult = 0;
+
+            for (int pos = movieDatabase.length - 1; pos > (movieDatabase.length - resultLength - 1); pos--) {
+                bufferDatabase[posResult] = movieDatabase[pos];
+                posResult++;
+                resultDatabase = bufferDatabase;
+            }
         return resultDatabase;
     }
 }

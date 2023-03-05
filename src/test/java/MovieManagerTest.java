@@ -18,7 +18,7 @@ public class MovieManagerTest {
 //    MovieManager movie13 = new MovieManager("Матрица (1999)");
 
     @Test
-    public void shdAddToMDB() {
+    public void shdAddToMDB() { /** проверяет добавление фильма в базу данных */
         MovieManager wutToWatch = new MovieManager();
         wutToWatch.addMovieToDB("Матрица (1999)");
         wutToWatch.addMovieToDB("Чужой");
@@ -33,7 +33,7 @@ public class MovieManagerTest {
     }
 
     @Test
-    public void shdAddToMDBifZero() {
+    public void shdAddToMDBifZero() { /** проверяет добавление пустого массива */
         MovieManager wutToWatch = new MovieManager();
 
         String[] expected = {};
@@ -43,7 +43,7 @@ public class MovieManagerTest {
     }
 
     @Test
-    public void shdAddToMDBifSingle() {
+    public void shdAddToMDBifSingle() { /** проверяет добавление одного фильма */
         MovieManager wutToWatch = new MovieManager();
         wutToWatch.addMovieToDB("Чужой");
 
@@ -54,7 +54,7 @@ public class MovieManagerTest {
     }
 
     @Test
-    public void shdReturnAllMoviesInDB() {
+    public void shdReturnAllMoviesInDB() { /**  проверка возврата всех фильмав в БД */
         MovieManager wutToWatch = new MovieManager();
         wutToWatch.addMovieToDB("Матрица (1999)");
         wutToWatch.addMovieToDB("Чужой");
@@ -69,7 +69,7 @@ public class MovieManagerTest {
     }
 
     @Test
-    public void shdReturnLastNmoviesDefault() {
+    public void shdReturnLastNmoviesDefault() { /** проверка лимита на возврат фильмов по умолчанию */
         MovieManager wutToWatch = new MovieManager();
         wutToWatch.addMovieToDB("Матрица (1999)");
         wutToWatch.addMovieToDB("Чужой");
@@ -92,7 +92,7 @@ public class MovieManagerTest {
     }
 
     @Test
-    public void shdReturnLastNmoviesCustomMulti() {
+    public void shdReturnLastNmoviesCustomAboveLimit() { /** проверяет возврат, когда фильмов в БД БОЛЬШЕ лимита */
         MovieManager wutToWatch = new MovieManager(5);
         wutToWatch.addMovieToDB("Матрица (1999)");
         wutToWatch.addMovieToDB("Чужой");
@@ -108,6 +108,36 @@ public class MovieManagerTest {
         wutToWatch.addMovieToDB("Солярис");
 
         String[] expected = {"Солярис", "Война и мир", "Большие гонки", "Клеопатра", "1984"};
+        String[] actual = wutToWatch.findLast();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shdReturnLastNmoviesCustomBelowLimit() { /** проверяет возврат, когда фильмов в БД МЕНЬШЕ лимита */
+        MovieManager wutToWatch = new MovieManager(7);
+        wutToWatch.addMovieToDB("Матрица (1999)");
+        wutToWatch.addMovieToDB("Чужой");
+        wutToWatch.addMovieToDB("Александр Невский (1938)");
+        wutToWatch.addMovieToDB("Метрополис");
+        wutToWatch.addMovieToDB("Тайны одной души");
+
+        String[] expected = {"Тайны одной души", "Метрополис", "Александр Невский (1938)", "Чужой", "Матрица (1999)"};
+        String[] actual = wutToWatch.findLast();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shdReturnLastNmoviesCustomEqualToLimit() { /** проверяет возврат, когда число фильмов в БД РАВНО лимиту */
+        MovieManager wutToWatch = new MovieManager(5);
+        wutToWatch.addMovieToDB("Матрица (1999)");
+        wutToWatch.addMovieToDB("Чужой");
+        wutToWatch.addMovieToDB("Александр Невский (1938)");
+        wutToWatch.addMovieToDB("Метрополис");
+        wutToWatch.addMovieToDB("Тайны одной души");
+
+        String[] expected = {"Тайны одной души", "Метрополис", "Александр Невский (1938)", "Чужой", "Матрица (1999)"};
         String[] actual = wutToWatch.findLast();
 
         Assertions.assertArrayEquals(expected, actual);
