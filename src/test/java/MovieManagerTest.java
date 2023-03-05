@@ -53,10 +53,10 @@ public class MovieManagerTest {
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
 
-        MovieEntry[] expected = {movie1};
-        MovieEntry[] actual = movieMngr.findInDatabaseById(1703);
+        MovieEntry expected = movie1;
+        MovieEntry actual = movieMngr.findInDatabaseById(1703);
 
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -64,22 +64,10 @@ public class MovieManagerTest {
         MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
         doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
 
-        MovieEntry[] expected = {}; /** насколько я понял, ожидаемый массив в принципе нельзя прописать как null;
-         можно ли считать пустой массив сооответствующим заданию? */
-        MovieEntry[] actual = movieMngr.findInDatabaseById(5928);
+        MovieEntry expected = null;
+        MovieEntry actual = movieMngr.findInDatabaseById(5928);
 
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shdFindMovieByIdIfDuplicate() {
-        MovieEntry[] movieDatabase = {movie1, movie3, movie5, movie8, movie13};
-        doReturn(movieDatabase).when(movieRepo).getMovieDatabase();
-
-        MovieEntry[] expected = {movie5, movie13};
-        MovieEntry[] actual = movieMngr.findInDatabaseById(1138);
-
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test

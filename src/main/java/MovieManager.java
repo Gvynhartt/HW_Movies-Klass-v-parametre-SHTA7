@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class MovieManager {
     private MovieRepository movieRepo;
 
@@ -21,33 +23,22 @@ public class MovieManager {
         return movieDatabase;
     }
 
-    public MovieEntry[] findInDatabaseById(int targetId) {
+    public MovieEntry findInDatabaseById(int targetId) {
         MovieEntry[] movieDatabase = movieRepo.getMovieDatabase();
         MovieEntry[] bufferDatabase = new MovieEntry[movieDatabase.length];
         int pos = 0;
-        int matchCount = 0;
-        for (MovieEntry newEntry : movieDatabase) {
-            if (newEntry.getMovieId() == targetId) {
-                bufferDatabase[pos] = newEntry;
-                pos++;
-                matchCount++;
-            } else {
-                pos++;
-            }
-        }
-        MovieEntry[] dynamicDatabase = new MovieEntry[matchCount];
-        int posDynamic = 0;
+        int matchPos = 0;
 
-        for (pos = 0; pos < bufferDatabase.length; pos++) {
-            if (bufferDatabase[pos] != null) {
-                dynamicDatabase[posDynamic] = bufferDatabase[pos];
+        for (MovieEntry newEntry : movieDatabase) {
+            if (newEntry.getMovieId() != targetId) {
                 pos++;
-                posDynamic++;
             } else {
+                bufferDatabase[pos] = newEntry;
+                matchPos = pos;
                 pos++;
             }
         }
-        return dynamicDatabase;
+        return bufferDatabase[matchPos];
     }
 
     public MovieEntry[] removeFromDatabaseById(int removeId) {
